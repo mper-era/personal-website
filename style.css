@@ -1,0 +1,61 @@
+:root {
+    --bg-color: #121212;
+    --text-color: #f3f4f5;
+    --link-color: #518fe4;
+    --head-bg-color: #06235d;
+    --head-color: #ec2127;
+    --note-color: #222832;
+    --border-color: #48566b;
+    --fade-color: #9da4af;
+    --hover-color: #e89217;
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+p, a {
+    font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+h1 {
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 35px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: var(--bg-color);
+    border-right: 3px solid var(--border-color);
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--fade-color);
+    display: block;
+}
+
+.sidenav a:hover {
+    color: var(--hover-color);
+    text-decoration: underline;
+}
+
+.content {
+    margin-left: 160px;
+    padding: 0px 10px;
+    color: var(--text-color);
+}
