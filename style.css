@@ -7,6 +7,7 @@
     --border-color: #48566b;
     --fade-color: #9ca4af;
     --accent-color: #e89217;
+    font-size: 16px;
 }
 
 body {
@@ -80,4 +81,13 @@ h1 {
     margin-left: 20%;
     padding: 0rem 2rem;
     color: var(--text-color);
+}
+
+@media screen and (max-width: 1000px) {
+    :root {
+        font-size: 1.6vw;
+    }
+    .sidenav {
+        border-right: 1px solid var(--border-color);
+    }
 }
