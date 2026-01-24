@@ -2,7 +2,7 @@ let snowflakes = [];
 
 let screenH, screenW;
 
-let numSnow = 50;
+let numSnow = 100;
 let speedMin = 50;
 let speedMax = 100;
 
@@ -23,13 +23,13 @@ class Snowflake {
         this.speed = speed;
         this.x = x;
         this.y = y;
-        this.scale = 1;
+        this.scale = randNum(0.8, 1.2);
 
         this.flakeTime = 0;
         this.a = Math.random() / 4;
         this.b = (Math.random() < 0.5 ? 1 : -1) * randNum(1.5, 4);
         this.initx = Math.random();
-        this.inity = Math.random();
+        this.inity = Math.random() + 0.1;
 
         this.elem.style.opacity = (0.3 + Math.random()) / 3;
     }
@@ -85,6 +85,7 @@ let delta = 1
 
 function moveSnowflakes(curTime) {
     delta = ((curTime - pastTime) / (1000 / 60));
+    delta = Math.min(delta, 2);
 
     for (let i = 0; i < snowflakes.length; i++)
     {
