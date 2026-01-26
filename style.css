@@ -45,6 +45,7 @@ p, li {
     margin-top: 0rem;
     margin-bottom: 1.15rem;
     padding: 0;
+    z-index: 3;
 }
 
 ul {
@@ -74,6 +75,7 @@ h1, h2, h3 {
     font-weight: 500;
     width: 80%;
     margin-bottom: 1rem;
+    z-index: 4;
 }
 
 h1 {
@@ -133,7 +135,7 @@ h2 {
     position: fixed;
     background-color: #ffffff; /* default color, change if overlaps with text too much */
     user-select: none;
-    z-index: 1; /* move to foreground for now, move to bg later */
+    z-index: 1;
     pointer-events: none;
     border-radius: 50%;
     width: 0.8vw;

@@ -1,184 +1,117 @@
-// Array to store our Snowflake objects
 let snowflakes = [];
 
-// Global variables to store our browser's window size
-let browserWidth;
-let browserHeight;
+let screenH, screenW;
 
-// Specify the number of snowflakes you want visible
-let numberOfSnowflakes = 50;
+let numSnow = 100;
+let speedMin = 50;
+let speedMax = 60;
 
-// Flag to reset the position of the snowflakes
-let resetPosition = false;
+let reset = false;
 
-// Handle accessibility
-let enableAnimations = false;
-let reduceMotionQuery = matchMedia("(prefers-reduced-motion)");
-
-// Handle animation accessibility preferences
-function setAccessibilityState() {
-if (reduceMotionQuery.matches) {
-    enableAnimations = false;
-} else {
-    enableAnimations = true;
-}
-}
-setAccessibilityState();
-
-reduceMotionQuery.addListener(setAccessibilityState);
-
-//
-// It all starts here...
-//
-function setup() {
-if (enableAnimations) {
+function init()
+{
     window.addEventListener("DOMContentLoaded", generateSnowflakes, false);
-    window.addEventListener("resize", setResetFlag, false); // resizing makes all the snowflakes spam positions on the screen
+    window.addEventListener("resize", setResetFlag, false);
 }
-}
-setup();
+init();
 
-//
-// Constructor for our Snowflake object
-//
 class Snowflake {
-constructor(element, speed, xPos, yPos) {
-    // set initial snowflake properties
-    this.element = element;
-    this.speed = speed;
-    this.xPos = xPos;
-    this.yPos = yPos;
-    this.scale = 1;
 
-    // declare variables used for snowflake's motion
-    this.counter = 0;
-    this.sign = Math.random() < 0.5 ? 1 : -1;
+    constructor(elem, speed, x, y)
+    {
+        this.elem = elem;
+        this.speed = speed;
+        this.x = x;
+        this.y = y;
+        this.scale = randNum(0.8, 1.2);
 
-    // setting an initial opacity and size for our snowflake
-    this.element.style.opacity = (0.1 + Math.random()) / 3;
-}
+        this.flakeTime = 0;
+        this.a = Math.random() / 10;
+        this.b = (Math.random() < 0.5 ? 1 : -1) * randNum(2, 4);
+        this.initx = Math.random();
+        this.inity = Math.random() + 0.1;
 
-// The function responsible for actually moving our snowflake
-update(delta) {
-    // using some trigonometry to determine our x and y position
-    this.counter += (this.speed / 5000) * delta;
-    this.xPos += ((this.sign * delta * this.speed * Math.cos(this.counter)) / 40);
-    this.yPos += (Math.sin(this.counter) / 40 + (this.speed * delta) / 30);
-    this.scale = 0.5 + Math.abs((10 * Math.cos(this.counter)) / 20);
+        this.elem.style.opacity = randNum(0.2, 0.6);
+    }
 
-    // setting our snowflake's position
-    setTransform(
-    Math.round(this.xPos),
-    Math.round(this.yPos),
-    this.scale,
-    this.element
-    );
+    update(delta) {
+        // snowflake motion, delta is change in time
+        this.flakeTime += (this.speed / 5000) * delta;
+        this.x = ((this.initx * screenW) / (screenW / 10)) + (Math.sqrt(this.a * 2 * this.flakeTime) * Math.sin(this.flakeTime) * Math.sin((1 / this.b) * (2 * this.flakeTime) + (Math.PI / this.b)));
+        this.y = ((this.inity * screenH) / (screenH / 10)) + this.flakeTime - 1;
 
-    // if snowflake goes below the browser window, move it back to the top
-    if (this.yPos > browserHeight) {
-    this.yPos = -50;
+        // snowflake opacity, scale changing
+        
+        this.elem.style.transform = `translate3d(${this.x * (screenW / 10)}px, ${this.y * (screenH / 10)}px, 0) scale(${this.scale}, ${this.scale})`;
+        if (this.y * (screenH / 10) > screenH) {
+            this.flakeTime = 0;
+            this.inity = 0;
+        }
     }
 }
-}
 
-//
-// A performant way to set your snowflake's position and size
-//
-function setTransform(xPos, yPos, scale, el) {
-el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0) scale(${scale}, ${scale})`;
-}
-
-//
-// The function responsible for creating the snowflake
-//
 function generateSnowflakes() {
-// get our snowflake element from the DOM and store it
-let originalSnowflake = document.querySelector(".snowflake");
+    let origFlake = document.querySelector(".snowflake");
 
-// access our snowflake element's parent container
-let snowflakeContainer = originalSnowflake.parentNode;
-snowflakeContainer.style.display = "block";
+    let container = origFlake.parentNode;
+    container.style.display = "block";
 
-// get our browser's size
-browserWidth = document.documentElement.clientWidth;
-browserHeight = document.documentElement.clientHeight;
+    screenH = document.documentElement.clientHeight;
+    screenW = document.documentElement.clientWidth;
 
-// create each individual snowflake
-for (let i = 0; i < numberOfSnowflakes; i++) {
-    // clone our original snowflake and add it to snowflakeContainer
-    let snowflakeClone = originalSnowflake.cloneNode(true);
-    snowflakeContainer.appendChild(snowflakeClone);
+    for (let i = 0; i < numSnow; i++)
+    {
+        let cloneFlake = origFlake.cloneNode(true);
+        container.appendChild(cloneFlake);
 
-    // set our snowflake's initial position and related properties
-    let initialXPos = getPosition(50, browserWidth);
-    let initialYPos = getPosition(50, browserHeight);
-    let speed = (5 + Math.random() * 40) * delta;
+        let speed = randNum(speedMin, speedMax);
 
-    // create our Snowflake object
-    let snowflakeObject = new Snowflake(
-    snowflakeClone,
-    speed,
-    initialXPos,
-    initialYPos
-    );
-    snowflakes.push(snowflakeObject);
-}
-
-// remove the original snowflake because we no longer need it visible
-snowflakeContainer.removeChild(originalSnowflake);
-
-requestAnimationFrame(moveSnowflakes);
-}
-
-//
-// Responsible for moving each snowflake by calling its update function
-//
-let frames_per_second = 60;
-let frame_interval = 1000 / frames_per_second;
-
-let previousTime = performance.now();
-let delta = 1;
-
-function moveSnowflakes(currentTime) {
-delta = (currentTime - previousTime) / frame_interval;
-
-if (enableAnimations) {
-    for (let i = 0; i < snowflakes.length; i++) {
-    let snowflake = snowflakes[i];
-    snowflake.update(delta);
-    }
-}
-
-previousTime = currentTime;
-
-// Reset the position of all the snowflakes to a new value
-if (resetPosition) {
-    browserWidth = document.documentElement.clientWidth;
-    browserHeight = document.documentElement.clientHeight;
-
-    for (let i = 0; i < snowflakes.length; i++) {
-    let snowflake = snowflakes[i];
-
-    snowflake.xPos = getPosition(50, browserWidth);
-    snowflake.yPos = getPosition(50, browserHeight);
+        let objFlake = new Snowflake(cloneFlake, speed, 0, -10);
+        snowflakes.push(objFlake);
     }
 
-    resetPosition = false;
+    container.removeChild(origFlake);
+
+    requestAnimationFrame(moveSnowflakes);
 }
 
-requestAnimationFrame(moveSnowflakes);
+function randNum(a, b)
+{
+    return (a + ((b - a) * Math.random()));
 }
 
-//
-// This function returns a number between (maximum - offset) and (maximum + offset)
-//
-function getPosition(offset, size) {
-return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
+let pastTime = performance.now();
+let delta = 1
+
+function moveSnowflakes(curTime) {
+    delta = ((curTime - pastTime) / (1000 / 60));
+    delta = Math.min(delta, 2);
+
+    for (let i = 0; i < snowflakes.length; i++)
+    {
+        snowflakes[i].update(delta);
+    }
+
+    pastTime = curTime;
+
+    if (reset == true) {
+        screenH = document.documentElement.clientHeight;
+        screenW = document.documentElement.clientWidth;
+
+        for (let i = 0; i < snowflakes.length; i++)
+        {
+            let snowflake = snowflakes[i];
+
+            snowflake.x = randNum(0, screenW);
+            snowflake.y = -10;
+        }
+
+        reset = false;
+    }
+
+    requestAnimationFrame(moveSnowflakes);
 }
 
-//
-// Trigger a reset of all the snowflakes' positions
-//
 function setResetFlag(e) {
-resetPosition = true;
+    reset = true;
 }
