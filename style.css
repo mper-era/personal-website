@@ -7,6 +7,8 @@
     --border-color: #48566b;
     --fade-color: #9ca4af;
     --accent-color: #e89217;
+    --default-font: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --heading-font: "JetBrains Mono", monospace;
     font-size: 16px;
 }
 
@@ -35,7 +37,7 @@ body {
 
 p, li {
     color: var(--text-color);
-    font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Helvetica Neue", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: var(--default-font);
     font-style: normal;
     font-weight: 400;
     font-size: 1rem;
@@ -43,6 +45,7 @@ p, li {
     margin-top: 0rem;
     margin-bottom: 1.15rem;
     padding: 0;
+    z-index: 3;
 }
 
 ul {
@@ -51,7 +54,7 @@ ul {
 
 a {
     color: var(--link-color);
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--heading-font);
     font-style: normal;
     font-weight: 400;
     font-size: 1rem;
@@ -67,11 +70,12 @@ a:hover {
 
 h1, h2, h3 {
     color: var(--accent-color);
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--heading-font);
     font-style: normal;
     font-weight: 500;
     width: 80%;
     margin-bottom: 1rem;
+    z-index: 4;
 }
 
 h1 {
@@ -88,7 +92,7 @@ h2 {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     background-color: var(--bg-color);
     border-right: 3px solid var(--border-color);
     overflow-x: hidden;
@@ -118,4 +122,23 @@ h2 {
     .sidenav {
         border-right: 1px solid var(--border-color);
     }
+}
+
+.snowbg {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+
+.snowflake {
+    position: fixed;
+    background-color: #ffffff; /* default color, change if overlaps with text too much */
+    user-select: none;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 50%;
+    width: 0.8vw;
+    height: 0.8vw;
+    opacity: 1;
 }
