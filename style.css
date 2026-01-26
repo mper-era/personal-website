@@ -48,6 +48,11 @@ p, li {
     z-index: 3;
 }
 
+.lessp {
+    color: var(--border-color);
+    font-weight: 700;
+}
+
 ul {
     list-style-type: none;
 }
