@@ -1,8 +1,8 @@
 
 const events = [
-  {id: "event1", title: "Started Attending IMSA", date: "2023-08", description: "Skipped 9th grade and went to the Illinois Mathematics and Science Academy", side: "right", link: "pages/edu.html#e1"},
+  {id: "event1", title: "Started Attending IMSA", date: "2023-08", description: "Skipped 9th grade and started attending the Illinois Mathematics and Science Academy", side: "right", link: "pages/edu.html#e1"},
   {id: "event2", title: "Graduated IMSA", date: "2026-05", description: "Obtained high school diploma, final unweighted GPA of 3.9/4.0", side: "right", link: "pages/edu.html#e1"},
-  {id: "event3", title: "Start Attending UIUC", date: "2026-08", description: "Went to the University of Illinois Urbana-Champaign", side: "right", link: "pages/edu.html#e2"},
+  {id: "event3", title: "Started Attending UIUC", date: "2026-08", description: "Started attending the University of Illinois Urbana-Champaign for Aerospace Engineering", side: "right", link: "pages/edu.html#e2"},
   {id: "event4", title: "Accepted to ICML EIML Workshop", date: "2026-07", description: "Paper titled \"Ontological Closure and Structural Limits on Systemic AI\"", side: "right", link: "pages/experience.html#r4"},
   {id: "e4", title: "Presented Poster at PAI26 at Stanford", date: "2026-06", description: "Paper titled \"Corruption Structure Determines Failure Mode in MRI Reconstruction\"", side: "right", link: "pages/experience.html#r3"},
   {id: "event5", title: "Started Research at SIUC", date: "2025-06", description: "Project titled \"Prototyping New Systems for White Light Solar Flare Observation and Data Collection\" with Dr. Brevik's group", side: "right", link: "pages/experience.html#r2"},
@@ -40,7 +40,7 @@ function monthKey(str) {
 }
 
 const REFERENCE_WIDTH = 1400;  // window width at which pxPerDay = BASE_PX_PER_DAY
-const BASE_PX_PER_DAY = 2;     // density of events
+const BASE_PX_PER_DAY = 1;     // density of events
 const minSpacing = 0.6;
 const maxSpacing = 3;
 
